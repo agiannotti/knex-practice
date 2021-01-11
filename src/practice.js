@@ -1,27 +1,23 @@
 const knex = require('knex');
+require('dotenv').config();
 
-const knexInstance = knex({
+const db = knex({
   client: 'pg',
+  // hostname: 'localhost'
+  // password: ''
+  // databaseName: 'c47_knex_practice
+  // port: 5432 ALTERNATIVELY WHEN DEPLOYED
+  // connection: protocol username:password @ domain name :port / path
   connection: process.env.DB_URL,
 });
 
-// if password, connection: 'postgresql://dunder_mifflin:password-here@localhost/knex-practice',
-
-// Checks with node ./src/practice.js in console console.log('knex and driver installed correctly');
-
-// const q1 = knexInstance.from('amazong_products').select('*').toQuery();
-// const q2 = knexInstance.from('amazong_products').select('*').toQuery();
-
-// // toQuery() used for debugging and building query
-
-// console.log('q1:', q1);
-
-// console.log('q2:', q2);
-
-// utilizes .then() promise method to perform the query
-knexInstance
+db.select('*')
   .from('amazong_products')
-  .select('*')
-  .then((result) => {
-    console.log(result);
+  .then((data) => {
+    console.log(data);
+  })
+  // explicitly state to end process if necessary using .finally() method
+
+  .finally(() => {
+    db.destroy();
   });
